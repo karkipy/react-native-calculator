@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableHighlight,
+  Image,
+  TextInput,
+} from 'react-native';
 import {
   BACKGROUND_COLOR,
   BUTTON_PRIMARY_COLOR,
@@ -83,15 +90,18 @@ class Calculator extends Component {
       secondaryDisplay: '',
       clear: true,
     }
+
+    this.changeMod = this.changeMod.bind(this);
+    this.clearScreen = this.clearScreen.bind(this);
   }
 
 
-  primaryButtons(value) {
+  primaryButtons(value, functionCall = null) {
     return(
       <View style= {styles.calculatorCells}>
         <TouchableHighlight
           style={styles.primaryButtons}
-          onPress={() => this.onPressHandler(value)}
+          onPress={() =>  functionCall ? functionCall() : this.onPressHandler(value)}
         >
           <Text style={styles.primaryButtonsText}> {value} </Text>
         </TouchableHighlight>
@@ -101,7 +111,7 @@ class Calculator extends Component {
 
   onPressHandler(value) {
     const { primaryDisplay, clear } = this.state;
-    let newValue = clear ? `${value}` : primaryDisplay.concat(' ' + value);
+    let newValue = clear ? `${value}` : primaryDisplay.concat('' + value);
     this.setState({
       primaryDisplay: newValue,
       clear: false,
@@ -109,11 +119,30 @@ class Calculator extends Component {
   }
 
   getResult() {
-    const { primaryDisplay } = this.state;
-    let result = `${eval(primaryDisplay)}`;
+    const { primaryDisplay, history } = this.state;
+    try {
+      let submitString = primaryDisplay.replace('x', '*').replace('÷', '/');
+      let submitHistory = history;
+      let result = `${eval(submitString)}`;
+      submitHistory.push({
+        'equation' : primaryDisplay,
+        result,
+      })
+      this.setState({
+        primaryDisplay: result,
+        secondaryDisplay: primaryDisplay,
+        history: submitHistory,
+      }, () => console.log(this.state.history));
+    } catch(e) {
+        console.log(e);
+    }
+  }
+
+  clearScreen() {
     this.setState({
-      primaryDisplay: result,
-      secondaryDisplay: primaryDisplay,
+      secondaryDisplay: '',
+      primaryDisplay: '0',
+      clear: true,
     })
   }
 
@@ -127,6 +156,7 @@ class Calculator extends Component {
       : primaryDisplay.substr(0, primaryDisplay.length - 1);
       this.setState({
         primaryDisplay: result.length === 0 ? '0' : result,
+        clear: result.length === 0,
       })
     } else {
       displayArray.pop();
@@ -148,6 +178,21 @@ class Calculator extends Component {
         </TouchableHighlight>
       </View>
     )
+  }
+
+  changeMod() {
+    const { primaryDisplay } = this.state;
+    const negMod = '-(';
+    let res = '';
+    if (primaryDisplay.includes(negMod)) {
+      res = primaryDisplay.replace('-(', '').replace(')', '');
+    } else {
+      res = primaryDisplay === '0' ? primaryDisplay : `-(${primaryDisplay})`;
+    }
+
+    this.setState({
+      primaryDisplay: res,
+    })
   }
 
   secondaryButtonsAlt(value) {
@@ -178,8 +223,8 @@ class Calculator extends Component {
   renderUpperPart() {
     return(
       <View style={styles.firstRow}>
-        {this.primaryButtons('C')}
-        {this.primaryButtons('+/-')}
+        {this.primaryButtons('C', this.clearScreen)}
+        {this.primaryButtons('+/-', this.changeMod)}
         {this.primaryButtons('%')}
         {this.primaryButtons('÷')}
       </View>
@@ -242,7 +287,7 @@ class Calculator extends Component {
               <Text style={{ fontSize: 20, color: GREY_FONT }}> {secondaryDisplay} </Text>
             </View>
             <View style={{ flexDirection: 'row-reverse' , width: '100%', marginTop: 25, marginBottom: 30}}>
-                <Text style={{ fontSize: 28, color: 'white' }}> {primaryDisplay} </Text>
+              <Text style={{ fontSize: 28, color: 'white' }}> {primaryDisplay} </Text>
             </View>
 
             <View style={{ flexDirection: 'row' }}>
@@ -263,19 +308,14 @@ class Calculator extends Component {
         {/* Body part */}
         <View style={styles.body}>
           {this.renderUpperPart()}
-
           {/* Second part */}
           {this.renderSecondRow()}
-
           {/* third part */}
           {this.renderThirdRow()}
-
           {/* fourth part */}
           {this.renderFourthRow()}
-
           {/* fifth part */}
           {this.renderFifthRow()}
-
         </View>
 
       </View>
