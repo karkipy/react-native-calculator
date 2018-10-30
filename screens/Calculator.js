@@ -6,7 +6,9 @@ import {
   TouchableHighlight,
   Image,
   TextInput,
+  Modal,
 } from 'react-native';
+import FadeInView from './FadeInView';
 import {
   BACKGROUND_COLOR,
   BUTTON_PRIMARY_COLOR,
@@ -89,6 +91,7 @@ class Calculator extends Component {
       primaryDisplay: '0',
       secondaryDisplay: '',
       clear: true,
+      historyModal: false,
     }
 
     this.changeMod = this.changeMod.bind(this);
@@ -132,7 +135,7 @@ class Calculator extends Component {
         primaryDisplay: result,
         secondaryDisplay: primaryDisplay,
         history: submitHistory,
-      }, () => console.log(this.state.history));
+      });
     } catch(e) {
         console.log(e);
     }
@@ -276,8 +279,15 @@ class Calculator extends Component {
     );
   }
 
+  toggleModal() {
+    const { historyModal } = this.state;
+    this.setState({
+      historyModal: !historyModal,
+    });
+  }
+
   render() {
-    const { primaryDisplay, secondaryDisplay } = this.state;
+    const { primaryDisplay, secondaryDisplay, historyModal, history } = this.state;
     return(
       <View  style={styles.appContainer}>
         <View style={styles.header}>
@@ -292,7 +302,13 @@ class Calculator extends Component {
 
             <View style={{ flexDirection: 'row' }}>
               <View style={{ width: '50%'}}>
-                <Text style={{ color: 'white', fontSize: 14}}> HISTORY </Text>
+                <TouchableHighlight
+                  onPress={() => this.toggleModal()}
+                >
+                  <Text style={{ color: 'white', fontSize: 14}}>
+                    {historyModal ? 'KEYPAD': 'HISTORY' }
+                  </Text>
+                </TouchableHighlight>
               </View>
               <View style={{ width: '50%', flexDirection: 'row-reverse' }}>
                 <TouchableHighlight
@@ -316,6 +332,7 @@ class Calculator extends Component {
           {this.renderFourthRow()}
           {/* fifth part */}
           {this.renderFifthRow()}
+          { historyModal && <FadeInView historyList={history} />}
         </View>
 
       </View>
