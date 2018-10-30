@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableHighlight } from 'react-native';
-import { BACKGROUND_COLOR, BUTTON_PRIMARY_COLOR, BUTTON_SECONDARY_COLOR, BUTTON_EQUALS_COLOR } from './common/Constant';
+import { StyleSheet, Text, View, TouchableHighlight, Image } from 'react-native';
+import {
+  BACKGROUND_COLOR,
+  BUTTON_PRIMARY_COLOR,
+  BUTTON_SECONDARY_COLOR,
+  BUTTON_EQUALS_COLOR,
+  GREY_FONT,
+  HISTORY_IMAGE,
+} from './common/Constant';
 
 const styles = {
   appContainer: {
@@ -12,6 +19,13 @@ const styles = {
     height: '26%',
     marginTop: 25,
   },
+
+  headerContainer: {
+    width: '95%',
+    height: '100%',
+    alignSelf: 'center',
+  },
+
   body: {
     width: '100%',
     height: '71%',
@@ -63,42 +77,50 @@ const styles = {
 class Calculator extends Component {
   constructor(props) {
     super(props);
+    this.state= {
+      history: [],
+      primaryDisplay: '0',
+      secondaryDisplay: '',
+    }
+  }
+
+
+  primaryButtons(value) {
+    return(
+      <View style= {styles.calculatorCells}>
+        <TouchableHighlight
+          style={styles.primaryButtons}
+        >
+          <Text style={styles.primaryButtonsText}> {value} </Text>
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  secondaryButtons(value) {
+    return(
+      <View style= {styles.calculatorCells}>
+        <TouchableHighlight
+          style={styles.secondaryButtons}
+        >
+          <Text style={styles.secondaryButtonsText}>{value}</Text>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+
+  secondaryButtonsAlt() {
+    return
   }
 
   renderUpperPart() {
     return(
       <View style={styles.firstRow}>
-            <View style= {styles.calculatorCells}>
-              <TouchableHighlight
-                style={styles.primaryButtons}
-              >
-                <Text style={styles.primaryButtonsText}>C </Text>
-              </TouchableHighlight>
-            </View>
-            <View style= {styles.calculatorCells}>
-              <TouchableHighlight
-                  style={styles.primaryButtons}
-                >
-                <Text style={styles.primaryButtonsText}>+/- </Text>
-              </TouchableHighlight>
-            </View>
-
-            <View style= {styles.calculatorCells}>
-              <TouchableHighlight
-                  style={styles.primaryButtons}
-                >
-                <Text style={styles.primaryButtonsText}>% </Text>
-              </TouchableHighlight>
-            </View>
-
-            <View style= {styles.calculatorCells}>
-              <TouchableHighlight
-                  style={styles.primaryButtons}
-                >
-                <Text style={styles.primaryButtonsText}> ÷ </Text>
-              </TouchableHighlight>
-            </View>
-          </View>
+        {this.primaryButtons('C')}
+        {this.primaryButtons('+/-')}
+        {this.primaryButtons('%')}
+        {this.primaryButtons('÷')}
+      </View>
 
     );
   }
@@ -106,38 +128,11 @@ class Calculator extends Component {
   renderSecondRow() {
     return(
       <View style={styles.secondRow}>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>7</Text>
-        </TouchableHighlight>
+        {this.secondaryButtons(7)}
+        {this.secondaryButtons(8)}
+        {this.secondaryButtons(9)}
+        {this.primaryButtons('x')}
       </View>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>8</Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}> 9 </Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.primaryButtons}
-        >
-          <Text style={styles.primaryButtonsText}>x</Text>
-        </TouchableHighlight>
-      </View>
-
-    </View>
     );
   }
 
@@ -145,75 +140,21 @@ class Calculator extends Component {
   renderThirdRow() {
     return(
       <View style={styles.secondRow}>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>4</Text>
-        </TouchableHighlight>
+        {this.secondaryButtons(4)}
+        {this.secondaryButtons(5)}
+        {this.secondaryButtons(6)}
+        {this.primaryButtons('-')}
       </View>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>5</Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}> 6 </Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.primaryButtons}
-        >
-          <Text style={styles.primaryButtonsText}>-</Text>
-        </TouchableHighlight>
-      </View>
-
-    </View>
     );
   }
 
   renderFourthRow() {
     return(
       <View style={styles.secondRow}>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>1</Text>
-        </TouchableHighlight>
-      </View>
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}>2</Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}> 3 </Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.primaryButtons}
-        >
-          <Text style={styles.primaryButtonsText}>+</Text>
-        </TouchableHighlight>
-      </View>
-
+        {this.secondaryButtons(1)}
+        {this.secondaryButtons(2)}
+        {this.secondaryButtons(3)}
+        {this.primaryButtons('+')}
     </View>
     );
   }
@@ -250,10 +191,28 @@ class Calculator extends Component {
   }
 
   render() {
+    const { primaryDisplay, secondaryDisplay } = this.state;
     return(
       <View  style={styles.appContainer}>
         <View style={styles.header}>
           {/* Header part */}
+          <View style={styles.headerContainer}>
+            <View style={{ width: '100%', flexDirection: 'row-reverse', marginTop: 30 }}>
+              <Text style={{ fontSize: 20, color: GREY_FONT }}> {secondaryDisplay} </Text>
+            </View>
+            <View style={{ flexDirection: 'row-reverse' , width: '100%', marginTop: 25, marginBottom: 30}}>
+                <Text style={{ fontSize: 28, color: 'white' }}> {primaryDisplay} </Text>
+            </View>
+
+            <View style={{ flexDirection: 'row' }}>
+              <View style={{ width: '50%'}}>
+                <Text style={{ color: 'white', fontSize: 14}}> HISTORY </Text>
+              </View>
+              <View style={{ width: '50%', flexDirection: 'row-reverse' }}>
+                <Image source={HISTORY_IMAGE} style={{ width: 30, height: 18 }} />
+              </View>
+            </View>
+          </View>
         </View>
 
         {/* Body part */}
