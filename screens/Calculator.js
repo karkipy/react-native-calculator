@@ -91,6 +91,7 @@ class Calculator extends Component {
       <View style= {styles.calculatorCells}>
         <TouchableHighlight
           style={styles.primaryButtons}
+          onPress={() => this.onPressHandler(value)}
         >
           <Text style={styles.primaryButtonsText}> {value} </Text>
         </TouchableHighlight>
@@ -98,11 +99,30 @@ class Calculator extends Component {
     );
   }
 
+  onPressHandler(value) {
+    const { primaryDisplay, clear } = this.state;
+    let newValue = clear ? `${value}` : primaryDisplay.concat(' ' + value);
+    this.setState({
+      primaryDisplay: newValue,
+      clear: false,
+    })
+  }
+
+  getResult() {
+    const { primaryDisplay } = this.state;
+    let result = `${eval(primaryDisplay)}`;
+    this.setState({
+      primaryDisplay: result,
+      secondaryDisplay: primaryDisplay,
+    })
+  }
+
   secondaryButtons(value) {
     return(
       <View style= {styles.calculatorCells}>
         <TouchableHighlight
           style={styles.secondaryButtons}
+          onPress={() => this.onPressHandler(value)}
         >
           <Text style={styles.secondaryButtonsText}>{value}</Text>
         </TouchableHighlight>
@@ -127,6 +147,7 @@ class Calculator extends Component {
       <View style= {styles.calculatorCells}>
         <TouchableHighlight
           style={[styles.primaryButtons, {backgroundColor: BUTTON_EQUALS_COLOR}]}
+          onPress={() => this.getResult()}
         >
           <Text style={styles.primaryButtonsText}> = </Text>
         </TouchableHighlight>
