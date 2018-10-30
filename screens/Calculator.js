@@ -81,6 +81,7 @@ class Calculator extends Component {
       history: [],
       primaryDisplay: '0',
       secondaryDisplay: '',
+      clear: true,
     }
   }
 
@@ -109,8 +110,28 @@ class Calculator extends Component {
     )
   }
 
-  secondaryButtonsAlt() {
-    return
+  secondaryButtonsAlt(value) {
+    return (
+      <View style= {styles.calculatorCellsDouble}>
+        <TouchableHighlight
+          style={[styles.secondaryButtons, { width: '99%', alignItems: 'baseline'}]}
+        >
+          <Text style={[styles.secondaryButtonsText, { marginLeft: '20%'}]}>{value}</Text>
+        </TouchableHighlight>
+      </View>
+    )
+  }
+
+  submitButton() {
+    return(
+      <View style= {styles.calculatorCells}>
+        <TouchableHighlight
+          style={[styles.primaryButtons, {backgroundColor: BUTTON_EQUALS_COLOR}]}
+        >
+          <Text style={styles.primaryButtonsText}> = </Text>
+        </TouchableHighlight>
+      </View>
+    );
   }
 
   renderUpperPart() {
@@ -162,30 +183,9 @@ class Calculator extends Component {
   renderFifthRow() {
     return(
       <View style={styles.secondRow}>
-      <View style= {styles.calculatorCellsDouble}>
-        <TouchableHighlight
-          style={[styles.secondaryButtons, { width: '99%', alignItems: 'baseline'}]}
-        >
-          <Text style={[styles.secondaryButtonsText, { marginLeft: '20%'}]}>0</Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={styles.secondaryButtons}
-        >
-          <Text style={styles.secondaryButtonsText}> . </Text>
-        </TouchableHighlight>
-      </View>
-
-      <View style= {styles.calculatorCells}>
-        <TouchableHighlight
-          style={[styles.primaryButtons, {backgroundColor: BUTTON_EQUALS_COLOR}]}
-        >
-          <Text style={styles.primaryButtonsText}> = </Text>
-        </TouchableHighlight>
-      </View>
-
+        {this.secondaryButtonsAlt(0)}
+        {this.secondaryButtons('.')}
+        {this.submitButton()}
     </View>
     );
   }
@@ -228,11 +228,8 @@ class Calculator extends Component {
           {/* fourth part */}
           {this.renderFourthRow()}
 
-
           {/* fifth part */}
           {this.renderFifthRow()}
-
-
 
         </View>
 
