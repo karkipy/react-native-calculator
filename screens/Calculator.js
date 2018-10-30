@@ -117,6 +117,16 @@ class Calculator extends Component {
     })
   }
 
+  backPress() {
+    const { clear, primaryDisplay } = this.state;
+    let result = clear ? `${primaryDisplay}` : primaryDisplay.substr(0, primaryDisplay.length - 1);
+    console.log('never', primaryDisplay.trim());
+
+    this.setState({
+      primaryDisplay: result
+    })
+  }
+
   secondaryButtons(value) {
     return(
       <View style= {styles.calculatorCells}>
@@ -230,7 +240,11 @@ class Calculator extends Component {
                 <Text style={{ color: 'white', fontSize: 14}}> HISTORY </Text>
               </View>
               <View style={{ width: '50%', flexDirection: 'row-reverse' }}>
-                <Image source={HISTORY_IMAGE} style={{ width: 30, height: 18 }} />
+                <TouchableHighlight
+                  onPress={() => this.backPress()}
+                >
+                  <Image source={HISTORY_IMAGE} style={{ width: 30, height: 18 }} />
+                </TouchableHighlight>
               </View>
             </View>
           </View>

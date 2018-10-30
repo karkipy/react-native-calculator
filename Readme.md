@@ -3,7 +3,12 @@
 
 A calculator app in react native based on UI by
 
-Pravin Nakarmi : https://www.behance.net/gallery/71984717/Daily-UI-004-Calculator
+Pravin Nakarmi
+
+Dribble : https://dribbble.com/shots/5472004-Daily-UI-004-Calculator
+
+
+Behance : https://www.behance.net/gallery/71984717/Daily-UI-004-Calculator
 
 ### <b> To Run : </b>
 
