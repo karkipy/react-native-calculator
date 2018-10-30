@@ -119,12 +119,22 @@ class Calculator extends Component {
 
   backPress() {
     const { clear, primaryDisplay } = this.state;
-    let result = clear ? `${primaryDisplay}` : primaryDisplay.substr(0, primaryDisplay.length - 1);
-    console.log('never', primaryDisplay.trim());
+    let displayArray =  primaryDisplay.split(' ');
 
-    this.setState({
-      primaryDisplay: result
-    })
+    if (displayArray.length === 1) {
+      const result = clear
+      ? `${primaryDisplay}`
+      : primaryDisplay.substr(0, primaryDisplay.length - 1);
+      this.setState({
+        primaryDisplay: result.length === 0 ? '0' : result,
+      })
+    } else {
+      displayArray.pop();
+      const result = displayArray.join(' ');
+      this.setState({
+        primaryDisplay: result,
+      })
+    }
   }
 
   secondaryButtons(value) {
