@@ -5,7 +5,7 @@ on: [pull_request]
 jobs:
   release-ios:
     name: Build and release iOS app
-    runs-on: macos-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x]

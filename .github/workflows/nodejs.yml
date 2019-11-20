@@ -1,11 +1,11 @@
 name: Publish React Native App to App Store and Play Store
 
-on: [pull_request]
+on: [push]
 
 jobs:
   release-ios:
     name: Build and release iOS app
-    runs-on: macos-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x]
@@ -16,31 +16,4 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - name: Install packages
-      run: yarn install
-    - name: Login Github User
-      run: echo -e "machine github.com\n  login $PERSONAL_ACCESS_TOKEN" >> ~/.netrc
-      env:
-        PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-    - name: Bundle and Upload to AppStore
-      run: cd ios && pod install && bundle exec fastlane ios beta:[]
-      env:
-        FASTLANE_PASSWORD: ${{ secrets.FASTLANE_PASSWORD }}
-        MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
-
-  release-android:
-    name: Build and release Android app
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '10.x'
-      - uses: actions/setup-ruby@v1
-        with:
-          ruby-version: '2.x'
-      - name: Install packages
-        run: yarn install
-      - name: Install Fastlane
-        run: cd android && gem install bundler -v 2.0.2 &&  bundle update --bundler && bundle install
-      - name: Bundle and Upload to PlayStore
-        run: cd android &&  bundle exec fastlane android beta
+      run: yarn install && echo "hello"
