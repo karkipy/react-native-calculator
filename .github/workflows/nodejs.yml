@@ -1,0 +1,19 @@
+name: Publish React Native App to App Store and Play Store
+
+on: [push]
+
+jobs:
+  release-ios:
+    name: Build and release iOS app
+    runs-on: macos-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - name: Install packages
+      run: yarn install && echo "hello"
