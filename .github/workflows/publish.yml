@@ -43,4 +43,4 @@ jobs:
       - name: Install Fastlane
         run: cd android && gem install bundler -v 2.0.2 &&  bundle update --bundler && bundle install
       - name: Bundle and Upload to PlayStore
-        run: cd android &&  bundle exec fastlane android beta
+        run:  bundle exec fastlane android beta

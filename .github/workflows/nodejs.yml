@@ -5,7 +5,7 @@ on: [push]
 jobs:
   release-ios:
     name: Build and release iOS app
-    runs-on: local-runner-999
+    runs-on: macos-latest
     strategy:
       matrix:
         node-version: [12.x]
